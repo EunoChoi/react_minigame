@@ -34,7 +34,7 @@ const getTdStyle = (code) => {
             };
         default:
             return {
-                background: 'grey',
+                background: 'white',
             };
     }
 
@@ -57,7 +57,7 @@ const getTdText = (code) => {
         case CODE.OPENED:
             return '';
         default:
-            return '';
+            return code;
     }
 }
 

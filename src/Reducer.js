@@ -44,6 +44,49 @@ const mineSetting = (row, col, mine) => {
     return data;
 }
 
+const getAround = (table, row, col) => {
+    let around;
+    if (row === 0) {
+        around = [
+            table[row][col - 1],
+            table[row][col + 1],
+
+            table[row + 1][col - 1],
+            table[row + 1][col],
+            table[row + 1][col + 1],
+        ];
+    }
+    else if (row === table.length - 1) {
+        around = [
+            table[row - 1][col - 1],
+            table[row - 1][col],
+            table[row - 1][col + 1],
+
+            table[row][col - 1],
+            table[row][col + 1]
+        ];
+    }
+    else {
+        around = [
+            table[row - 1][col - 1],
+            table[row - 1][col],
+            table[row - 1][col + 1],
+
+            table[row][col - 1],
+            table[row][col + 1],
+
+            table[row + 1][col - 1],
+            table[row + 1][col],
+            table[row + 1][col + 1],
+        ];
+    }
+    let aroundCount = around.reduce((a, c, i) => {
+        if (c === CODE.MINE) a++;
+        return a;
+    }, 0);
+    return aroundCount;
+}
+
 //Reducer function
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -56,7 +99,10 @@ export const reducer = (state, action) => {
         }
         case ACTION_OPEN_CELL: {
             const tableData = [...state.tableData];
-            tableData[action.row][action.col] = CODE.OPENED;
+            tableData[action.row] = [...state.tableData[action.row]];
+            //tableData[action.row][action.col] = CODE.OPENED;
+            tableData[action.row][action.col] = getAround(tableData, action.row, action.col);
+
             return {
                 ...state,
                 tableData,
@@ -64,6 +110,7 @@ export const reducer = (state, action) => {
         }
         case ACTION_CLICK_MINE: {
             const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]];
             tableData[action.row][action.col] = CODE.CLICKED_MINE;
             return {
                 ...state,

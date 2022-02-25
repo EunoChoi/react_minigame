@@ -3,8 +3,8 @@ import { TableContext } from './App';
 import { ACTION_START_GAME } from './Reducer';
 
 const Form = () => {
-    const [row, setRow] = useState(7);
-    const [col, setCol] = useState(7);
+    const [row, setRow] = useState(10);
+    const [col, setCol] = useState(10);
     const [mine, setMine] = useState(15);
 
     const { dispatch } = useContext(TableContext);

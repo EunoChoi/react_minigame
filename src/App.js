@@ -40,9 +40,9 @@ function App() {
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
         <Form />
-        {/* <div>{state.timer}</div> */}
+        <div>timer : {state.timer}</div>
         <Table />
-        {/* <div>{state.result}</div> */}
+        <div>result : {state.result}</div>
       </TableContext.Provider>
     </div >
   );
