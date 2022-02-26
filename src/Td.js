@@ -25,12 +25,12 @@ const getTdStyle = (code) => {
         case CODE.F_NORMAL:
         case CODE.F_MINE:
             return {
-                background: 'red',
+                background: 'lightBlue',
             };
         case CODE.Q_NORMAL:
         case CODE.Q_MINE:
             return {
-                background: 'yellow',
+                background: 'lightYellow',
             };
         default:
             return {
