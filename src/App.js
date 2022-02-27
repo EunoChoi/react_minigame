@@ -1,11 +1,9 @@
-import { useReducer, useMemo, createContext, useEffect } from 'react';
+import { useReducer, useMemo, createContext } from 'react';
 
 import './App.css';
 
 import Table from './Table';
 import Form from './Form';
-
-import { ACTION_START_COUNT } from './Reducer';
 
 //reducer import
 import { reducer } from './Reducer';

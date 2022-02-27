@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { CODE } from "./App";
+import { timer } from "./Form";
 
 //Reducer initialState
 export const initialState = {
     tableData: [],
     timer: 0,
-    result: 0,
     stop: true,
 
     mine: 0,
@@ -20,6 +19,7 @@ export const ACTION_MAKE_FLAG = 'ACTION_MAKE_FLAG';
 export const ACTION_MAKE_QS = 'ACTION_MAKE_QS';
 export const ACTION_MAKE_NORMAL = 'ACTION_MAKE_NORMAL';
 export const ACTION_CLICK_MINE = 'ACTION_CLICK_MINE';
+export const ACTION_STOP_TIMER = 'ACTION_STOP_TIMER';
 
 //function
 const mineSetting = (row, col, mine) => {
@@ -54,7 +54,7 @@ const getAround = (table, row, col) => {
     if (table[row][col] === CODE.NORMAL) {
         let around;
 
-        //클릭 좌표에 따라서 8방 around 계산
+        //클릭 좌표에 따라서 8방 around 배열 생성
         if (row === 0) {
             around = [
                 table[row][col - 1],
@@ -89,9 +89,10 @@ const getAround = (table, row, col) => {
                 table[row + 1][col + 1],
             ];
         }
-
+        console.log(around);
+        //around배열으로 지뢰 수 계산
         table[row][col] = around.reduce((a, c) => {
-            if (c === CODE.MINE) a++;
+            if (c === CODE.MINE || c === CODE.F_MINE || c === CODE.Q_MINE) a++;
             return a;
         }, 0);
 
@@ -135,6 +136,7 @@ const getAround = (table, row, col) => {
 export const reducer = (state, action) => {
     switch (action.type) {
         case ACTION_START_COUNT: {
+            //stop===true, timer 변경 종료
             if (state.stop === true) return { ...state };
             return {
                 ...state,
@@ -153,7 +155,9 @@ export const reducer = (state, action) => {
             };
         }
         case ACTION_OPEN_CELL: {
+            if (state.stop) return { ...state };
             const tableData = [...state.tableData];
+            console.log(tableData);
             //tableData[action.row][action.col] = CODE.OPENED;
             tableData[action.row] = [...state.tableData[action.row]];
 
@@ -168,8 +172,20 @@ export const reducer = (state, action) => {
             }
 
             //승리 조건 확인
+            console.log(counter, state.mine, state.row * state.col)
             if (counter + state.mine === state.row * state.col) {
-                alert('Game Complete! :)');
+                clearInterval(timer);
+                for (let i = 0; i < state.row; i++) {
+                    for (let j = 0; j < state.col; j++) {
+                        if (tableData[i][j] === CODE.MINE ||
+                            tableData[i][j] === CODE.F_MINE ||
+                            tableData[i][j] === CODE.Q_MINE)
+                            tableData[i][j] = CODE.F_MINE;
+                    }
+                }
+                setTimeout(() => {
+                    alert(`Game Complete! :)\nyour score : ${state.timer}s`)
+                }, 500);
                 return {
                     ...state,
                     tableData,
@@ -184,13 +200,16 @@ export const reducer = (state, action) => {
             };
         }
         case ACTION_CLICK_MINE: {
+            clearInterval(timer);
             const tableData = [...state.tableData];
             tableData[action.row] = [...state.tableData[action.row]];
             tableData[action.row][action.col] = CODE.CLICKED_MINE;
 
             for (let i = 0; i < state.row; i++) {
                 for (let j = 0; j < state.col; j++) {
-                    if (tableData[i][j] === CODE.MINE)
+                    if (tableData[i][j] === CODE.MINE ||
+                        tableData[i][j] === CODE.F_MINE ||
+                        tableData[i][j] === CODE.Q_MINE)
                         tableData[i][j] = CODE.CLICKED_MINE;
                 }
             }
@@ -241,6 +260,12 @@ export const reducer = (state, action) => {
                 ...state,
                 tableData,
             };
+        }
+        case ACTION_STOP_TIMER: {
+            return {
+                ...state,
+                stop: true
+            }
         }
         default:
             return state;
