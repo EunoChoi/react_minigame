@@ -1,9 +1,11 @@
-import { useReducer, useMemo, createContext } from 'react';
+import { useReducer, useMemo, createContext, useEffect } from 'react';
 
 import './App.css';
 
 import Table from './Table';
 import Form from './Form';
+
+import { ACTION_START_COUNT } from './Reducer';
 
 //reducer import
 import { reducer } from './Reducer';
@@ -35,6 +37,7 @@ function App() {
 
   //cashing to prevent Rerendering
   const value = useMemo(() => ({ stop: state.stop, tableData: state.tableData, dispatch }), [state.stop, state.tableData]);
+
   return (
     <div className="App">
       {/* value === { tableDate: state.tableData, dispatch } */}
@@ -42,7 +45,6 @@ function App() {
         <Form />
         <div>timer : {state.timer}</div>
         <Table />
-        <div>result : {state.result}</div>
       </TableContext.Provider>
     </div >
   );

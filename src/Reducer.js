@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { CODE } from "./App";
 
 //Reducer initialState
@@ -7,19 +8,18 @@ export const initialState = {
     result: 0,
     stop: true,
 
-    count: 0,
     mine: 0,
     row: 0,
     col: 0,
 };
 //Recuder action
+export const ACTION_START_COUNT = 'ACTION_START_COUNT';
 export const ACTION_START_GAME = 'ACTION_START_GAME';
 export const ACTION_OPEN_CELL = 'ACTION_OPEN_CELL';
 export const ACTION_MAKE_FLAG = 'ACTION_MAKE_FLAG';
 export const ACTION_MAKE_QS = 'ACTION_MAKE_QS';
 export const ACTION_MAKE_NORMAL = 'ACTION_MAKE_NORMAL';
 export const ACTION_CLICK_MINE = 'ACTION_CLICK_MINE';
-
 
 //function
 const mineSetting = (row, col, mine) => {
@@ -50,8 +50,7 @@ const mineSetting = (row, col, mine) => {
 }
 
 
-const getAround = (table, row, col, count) => {
-    count++;
+const getAround = (table, row, col) => {
     if (table[row][col] === CODE.NORMAL) {
         let around;
 
@@ -135,6 +134,13 @@ const getAround = (table, row, col, count) => {
 //Reducer function
 export const reducer = (state, action) => {
     switch (action.type) {
+        case ACTION_START_COUNT: {
+            if (state.stop === true) return { ...state };
+            return {
+                ...state,
+                timer: state.timer + 1,
+            };
+        }
         case ACTION_START_GAME: {
             return {
                 ...state,
@@ -143,27 +149,53 @@ export const reducer = (state, action) => {
                 row: action.row,
                 col: action.col,
                 mine: action.mine,
+                timer: 0,
             };
         }
         case ACTION_OPEN_CELL: {
-
             const tableData = [...state.tableData];
             //tableData[action.row][action.col] = CODE.OPENED;
             tableData[action.row] = [...state.tableData[action.row]];
 
-            getAround(tableData, action.row, action.col, state.count);
-            console.log(state.row, state.col, state.mine, state.count);
+            getAround(tableData, action.row, action.col);
+
+            let counter = 0;
+            for (let i = 0; i < state.row; i++) {
+                for (let j = 0; j < state.col; j++) {
+                    if (tableData[i][j] >= 0)
+                        counter++;
+                }
+            }
+
+            //승리 조건 확인
+            if (counter + state.mine === state.row * state.col) {
+                alert('Game Complete! :)');
+                return {
+                    ...state,
+                    tableData,
+                    stop: true,
+                };
+            };
 
             return {
                 ...state,
                 tableData,
-                count: state.count + 1,
+                count: counter,
             };
         }
         case ACTION_CLICK_MINE: {
             const tableData = [...state.tableData];
             tableData[action.row] = [...state.tableData[action.row]];
             tableData[action.row][action.col] = CODE.CLICKED_MINE;
+
+            for (let i = 0; i < state.row; i++) {
+                for (let j = 0; j < state.col; j++) {
+                    if (tableData[i][j] === CODE.MINE)
+                        tableData[i][j] = CODE.CLICKED_MINE;
+                }
+            }
+            setTimeout(() => { alert('Game Fail :(') }, 500);
+
             return {
                 ...state,
                 tableData,

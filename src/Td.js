@@ -45,7 +45,7 @@ const getTdText = (code) => {
         case CODE.NORMAL:
             return '';
         case CODE.MINE:
-            return '💣';
+            return '';
         case CODE.CLICKED_MINE:
             return '🔥';
         case CODE.F_NORMAL:
@@ -68,7 +68,8 @@ const Td = memo(({ rowIndex, colIndex }) => {
         if (stop) {
             return;
         }
-        console.log(rowIndex, colIndex, tableData);
+        //console.log(rowIndex, colIndex, tableData);
+
         //누르는 칸의 상황에 따라 동작이 다르도록
         switch (tableData[rowIndex][colIndex]) {
             case CODE.OPENED:
