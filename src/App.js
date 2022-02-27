@@ -34,15 +34,21 @@ function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   //cashing to prevent Rerendering
-  const value = useMemo(() => ({ stop: state.stop, tableData: state.tableData, dispatch }), [state.stop, state.tableData]);
+  const value = useMemo(
+    () => ({
+      timer: state.timer,
+      stop: state.stop,
+      tableData: state.tableData,
+      dispatch
+    }),
+    [state.timer, state.stop, state.tableData]);
 
   return (
     <div className="App">
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
-        <Form />
-        <div>timer : {state.timer}</div>
-        <Table />
+        {!state.start ? <Form /> : null}
+        {state.start ? <Table /> : null}
       </TableContext.Provider>
     </div >
   );

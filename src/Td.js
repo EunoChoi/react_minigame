@@ -12,11 +12,11 @@ const getTdStyle = (code) => {
     switch (code) {
         case CODE.NORMAL:
             return {
-                background: 'grey',
+                background: 'lightcyan',
             };
         case CODE.MINE:
             return {
-                background: 'grey',
+                background: 'lightcyan',
             };
         case CODE.OPENED:
             return {
@@ -25,7 +25,7 @@ const getTdStyle = (code) => {
         case CODE.F_NORMAL:
         case CODE.F_MINE:
             return {
-                background: 'lightBlue',
+                background: 'lightPink',
             };
         case CODE.Q_NORMAL:
         case CODE.Q_MINE:

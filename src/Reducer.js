@@ -10,6 +10,8 @@ export const initialState = {
     mine: 0,
     row: 0,
     col: 0,
+
+    start: false,
 };
 //Recuder action
 export const ACTION_START_COUNT = 'ACTION_START_COUNT';
@@ -20,6 +22,7 @@ export const ACTION_MAKE_QS = 'ACTION_MAKE_QS';
 export const ACTION_MAKE_NORMAL = 'ACTION_MAKE_NORMAL';
 export const ACTION_CLICK_MINE = 'ACTION_CLICK_MINE';
 export const ACTION_STOP_TIMER = 'ACTION_STOP_TIMER';
+export const ACTION_BACK = 'ACTION_BACK';
 
 //function
 const mineSetting = (row, col, mine) => {
@@ -136,11 +139,13 @@ const getAround = (table, row, col) => {
 export const reducer = (state, action) => {
     switch (action.type) {
         case ACTION_START_COUNT: {
+            let timer = state.timer + 1;
+
             //stop===true, timer 변경 종료
             if (state.stop === true) return { ...state };
             return {
                 ...state,
-                timer: state.timer + 1,
+                timer,
             };
         }
         case ACTION_START_GAME: {
@@ -152,6 +157,7 @@ export const reducer = (state, action) => {
                 col: action.col,
                 mine: action.mine,
                 timer: 0,
+                start: true,
             };
         }
         case ACTION_OPEN_CELL: {
@@ -265,6 +271,12 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 stop: true
+            }
+        }
+        case ACTION_BACK: {
+            return {
+                ...state,
+                start: false,
             }
         }
         default:
