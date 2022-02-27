@@ -1,8 +1,8 @@
 import { useState, useCallback, useContext } from 'react';
 import { TableContext } from './App';
-import { ACTION_START_GAME, ACTION_START_COUNT, ACTION_STOP_TIMER } from './Reducer';
-export let timer;
-const Form = () => {
+import { ACTION_START_GAME, ACTION_TIME_COUNT } from './Reducer';
+export let timeInterval;
+const Main = () => {
     const [row, setRow] = useState(7);
     const [col, setCol] = useState(7);
     const [mine, setMine] = useState(10);
@@ -26,30 +26,27 @@ const Form = () => {
     const onClickStart = () => {
         if (mine >= row * col) {
             alert('plaese correct number');
-            clearInterval(timer);
-            dispatch({ type: ACTION_STOP_TIMER });
-            dispatch({ type: ACTION_START_GAME, row: 0, col: 0, mine: 0 });
             return;
         }
         dispatch({ type: ACTION_START_GAME, row: row, col: col, mine: mine });
         //이전에 생성된 타이머 setInterval 삭제
-        clearInterval(timer);
-        timer = setInterval(() => { dispatch({ type: ACTION_START_COUNT }); }, 1000);
+        clearInterval(timeInterval);
+        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     };
     const onClickLevel1 = () => {
         dispatch({ type: ACTION_START_GAME, row: 6, col: 6, mine: 6 });
-        clearInterval(timer);
-        timer = setInterval(() => { dispatch({ type: ACTION_START_COUNT }); }, 1000);
+        clearInterval(timeInterval);
+        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickLevel2 = () => {
         dispatch({ type: ACTION_START_GAME, row: 8, col: 8, mine: 16 });
-        clearInterval(timer);
-        timer = setInterval(() => { dispatch({ type: ACTION_START_COUNT }); }, 1000);
+        clearInterval(timeInterval);
+        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickLevel3 = () => {
         dispatch({ type: ACTION_START_GAME, row: 8, col: 8, mine: 30 });
-        clearInterval(timer);
-        timer = setInterval(() => { dispatch({ type: ACTION_START_COUNT }); }, 1000);
+        clearInterval(timeInterval);
+        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickCustom = () => {
         setCustom((c) => !c);
@@ -57,16 +54,15 @@ const Form = () => {
     return (
         <>
             <div className='levelSelectPage'>
-                <span className='title'>Level Select</span>
+                <span className='title'>Minesweeper</span>
+                <span className='subTitle'>Level Select</span>
                 {!custom ? <div className='levelSelectPage_btn'>
                     <button className='btn' onClick={onClickLevel1}>level 1</button>
                     <button className='btn' onClick={onClickLevel2}>level 2</button>
                     <button className='btn' onClick={onClickLevel3}>level 3</button>
                 </div> : null}
-
-                <button className='btn' onClick={onClickCustom}>{!custom ? 'custom' : 'back'}</button>
-
                 {custom ? <div className='levelCustom'>
+                    <span className='customTitle'>Custom</span>
                     <div>
                         <span htmlFor='row'>ROW :</span>
                         <input
@@ -106,10 +102,13 @@ const Form = () => {
 
                     <button onClick={onClickStart}>Start</button>
                 </div> : null}
+                <button className='btn' onClick={onClickCustom}>{!custom ? 'custom' : 'back'}</button>
+
+
 
             </div>
         </>
     );
 }
 
-export default Form;
+export default Main;

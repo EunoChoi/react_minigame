@@ -65,10 +65,10 @@ const Td = memo(({ rowIndex, colIndex }) => {
     const { tableData, stop, dispatch } = useContext(TableContext);
 
     const onClick = useCallback(() => {
+        //stop이 true면 셀 처리 X
         if (stop) {
             return;
         }
-        //console.log(rowIndex, colIndex, tableData);
 
         //누르는 칸의 상황에 따라 동작이 다르도록
         switch (tableData[rowIndex][colIndex]) {
@@ -87,7 +87,7 @@ const Td = memo(({ rowIndex, colIndex }) => {
             default:
                 break;
         }
-    }, [tableData]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData]);
     const onRightClick = useCallback((e) => {
         e.preventDefault();
         if (stop) {
@@ -109,7 +109,7 @@ const Td = memo(({ rowIndex, colIndex }) => {
             default:
                 break;
         }
-    }, [stop, tableData]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData]);
 
     return (
         <td

@@ -1,9 +1,9 @@
-import { useReducer, useMemo, createContext } from 'react';
+import { useReducer, useMemo, createContext, useState } from 'react';
 
 import './App.css';
 
-import Table from './Table';
-import Form from './Form';
+import Game from './Game';
+import Main from './Main';
 
 //reducer import
 import { reducer } from './Reducer';
@@ -29,6 +29,8 @@ export const CODE = {
 
 function App() {
 
+  const [realtime, setRealTime] = useState(0);
+
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -43,14 +45,14 @@ function App() {
       tableData: state.tableData,
       dispatch
     }),
-    [state.timer, state.stop, state.tableData]);
+    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData]);
 
   return (
     <div className="App">
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
-        {!state.start ? <Form /> : null}
-        {state.start ? <Table /> : null}
+        {!state.start ? <Main /> : null}
+        {state.start ? <Game /> : null}
       </TableContext.Provider>
     </div >
   );

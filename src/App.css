@@ -29,6 +29,7 @@ body{
 }
 .levelSelectPage_btn{
     display: flex;
+    margin-top: 30px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -50,7 +51,7 @@ body{
     font-size: 40px;
     margin-bottom: 30px;
 }
-.timer{
+.subTitle{
     color: grey;
     font-weight: 800;
     font-size: 28px;
@@ -85,14 +86,14 @@ table{
 
     background-color: white;
     border-radius: 30px;
-
-    width: 200px;
-    height: 220px;
+    padding : 30px;
+    margin:20px;
 }
 .levelCustom div{
     width: 160px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .levelCustom span{
     border : none;
@@ -101,6 +102,12 @@ table{
     color: grey;
     font-size: 20px;
 }
+.levelCustom .customTitle{
+    font-weight: 800;
+    font-size: 24px;
+    margin: 5px;
+}
+
 .levelCustom input{
     border : none;
     text-align: right;
@@ -118,6 +125,7 @@ table{
     font-size: 24px;
     margin: 5px;
 }
+
 
 /* 화살표 버튼 제거 */
 input::-webkit-outer-spin-button,

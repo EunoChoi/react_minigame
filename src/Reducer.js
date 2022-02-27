@@ -1,5 +1,5 @@
 import { CODE } from "./App";
-import { timer } from "./Form";
+import { timeInterval } from "./Main";
 
 //Reducer initialState
 export const initialState = {
@@ -14,7 +14,7 @@ export const initialState = {
     start: false,
 };
 //Recuder action
-export const ACTION_START_COUNT = 'ACTION_START_COUNT';
+export const ACTION_TIME_COUNT = 'ACTION_TIME_COUNT';
 export const ACTION_START_GAME = 'ACTION_START_GAME';
 export const ACTION_OPEN_CELL = 'ACTION_OPEN_CELL';
 export const ACTION_MAKE_FLAG = 'ACTION_MAKE_FLAG';
@@ -51,7 +51,6 @@ const mineSetting = (row, col, mine) => {
     }
     return data;
 }
-
 
 const getAround = (table, row, col) => {
     if (table[row][col] === CODE.NORMAL) {
@@ -138,7 +137,7 @@ const getAround = (table, row, col) => {
 //Reducer function
 export const reducer = (state, action) => {
     switch (action.type) {
-        case ACTION_START_COUNT: {
+        case ACTION_TIME_COUNT: {
             let timer = state.timer + 1;
 
             //stop===true, timer 변경 종료
@@ -180,7 +179,7 @@ export const reducer = (state, action) => {
             //승리 조건 확인
             console.log(counter, state.mine, state.row * state.col)
             if (counter + state.mine === state.row * state.col) {
-                clearInterval(timer);
+                clearInterval(timeInterval);
                 for (let i = 0; i < state.row; i++) {
                     for (let j = 0; j < state.col; j++) {
                         if (tableData[i][j] === CODE.MINE ||
@@ -206,7 +205,7 @@ export const reducer = (state, action) => {
             };
         }
         case ACTION_CLICK_MINE: {
-            clearInterval(timer);
+            clearInterval(timeInterval);
             const tableData = [...state.tableData];
             tableData[action.row] = [...state.tableData[action.row]];
             tableData[action.row][action.col] = CODE.CLICKED_MINE;
@@ -268,13 +267,14 @@ export const reducer = (state, action) => {
             };
         }
         case ACTION_STOP_TIMER: {
+            let stop = !state.stop;
             return {
                 ...state,
-                stop: true
+                stop,
             }
         }
         case ACTION_BACK: {
-            clearInterval(timer);
+            clearInterval(timeInterval);
             return {
                 ...state,
                 start: false,
@@ -284,3 +284,4 @@ export const reducer = (state, action) => {
             return state;
     }
 };
+
