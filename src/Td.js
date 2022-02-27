@@ -61,7 +61,7 @@ const getTdText = (code) => {
     }
 }
 
-const Td = memo(({ rowIndex, colIndex }) => {
+const Td = memo(({ rowIndex, colIndex, time }) => {
     const { tableData, stop, dispatch } = useContext(TableContext);
 
     const onClick = useCallback(() => {
@@ -79,15 +79,24 @@ const Td = memo(({ rowIndex, colIndex }) => {
             case CODE.Q_MINE:
                 break;
             case CODE.MINE:
-                dispatch({ type: ACTION_CLICK_MINE, row: rowIndex, col: colIndex });
+                dispatch({
+                    type: ACTION_CLICK_MINE,
+                    row: rowIndex,
+                    col: colIndex,
+                });
                 break;
             case CODE.NORMAL:
-                dispatch({ type: ACTION_OPEN_CELL, row: rowIndex, col: colIndex });
+                dispatch({
+                    type: ACTION_OPEN_CELL,
+                    row: rowIndex,
+                    col: colIndex,
+                    time,
+                });
                 break;
             default:
                 break;
         }
-    }, [colIndex, dispatch, rowIndex, stop, tableData]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData, time]);
     const onRightClick = useCallback((e) => {
         e.preventDefault();
         if (stop) {

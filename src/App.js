@@ -6,8 +6,8 @@ import Game from './Game';
 import Main from './Main';
 
 //reducer import
-import { reducer } from './Reducer';
-import { initialState } from './Reducer';
+import { reducer, initialState } from './Reducer';
+
 
 //context create
 export const TableContext = createContext({
@@ -29,10 +29,9 @@ export const CODE = {
 
 function App() {
 
-  const [realtime, setRealTime] = useState(0);
-
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [time, setTime] = useState(0);
 
   //cashing to prevent Rerendering
   const value = useMemo(
@@ -43,16 +42,18 @@ function App() {
       timer: state.timer,
       stop: state.stop,
       tableData: state.tableData,
+      finish: state.finish,
       dispatch
     }),
-    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData]);
+    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData, state.finish]);
 
   return (
     <div className="App">
+
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
-        {!state.start ? <Main /> : null}
-        {state.start ? <Game /> : null}
+        {!state.start ? <Main time={time} setTime={setTime} /> : null}
+        {state.start ? <Game time={time} setTime={setTime} /> : null}
       </TableContext.Provider>
     </div >
   );

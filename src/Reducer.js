@@ -1,11 +1,10 @@
 import { CODE } from "./App";
-import { timeInterval } from "./Main";
 
 //Reducer initialState
 export const initialState = {
     tableData: [],
-    timer: 0,
     stop: true,
+    finish: false,
 
     mine: 0,
     row: 0,
@@ -14,14 +13,17 @@ export const initialState = {
     start: false,
 };
 //Recuder action
-export const ACTION_TIME_COUNT = 'ACTION_TIME_COUNT';
+export const ACTION_START_TIMER = 'ACTION_START_TIMER';
+export const ACTION_STOP_TIMER = 'ACTION_STOP_TIMER';
+export const ACTION_STOP_TIMER2 = 'ACTION_STOP_TIMER2';
+
+
 export const ACTION_START_GAME = 'ACTION_START_GAME';
 export const ACTION_OPEN_CELL = 'ACTION_OPEN_CELL';
 export const ACTION_MAKE_FLAG = 'ACTION_MAKE_FLAG';
 export const ACTION_MAKE_QS = 'ACTION_MAKE_QS';
 export const ACTION_MAKE_NORMAL = 'ACTION_MAKE_NORMAL';
 export const ACTION_CLICK_MINE = 'ACTION_CLICK_MINE';
-export const ACTION_STOP_TIMER = 'ACTION_STOP_TIMER';
 export const ACTION_BACK = 'ACTION_BACK';
 
 //function
@@ -134,20 +136,47 @@ const getAround = (table, row, col) => {
     return;
 }
 
+let timeInterval;
+
 //Reducer function
 export const reducer = (state, action) => {
-    switch (action.type) {
-        case ACTION_TIME_COUNT: {
-            let timer = state.timer + 1;
 
-            //stop===true, timer 변경 종료
-            if (state.stop === true) return { ...state };
+    switch (action.type) {
+        // case ACTION_START_TIMER: {
+        //     console.log(timeInterval);
+        //     return {
+        //         ...state,
+        //     };
+        // }
+        case ACTION_STOP_TIMER: {
+            clearInterval(timeInterval);
+            action.setTime(0);
+            console.log(timeInterval);
+
+            //stop 변수는 셀 더이상 안눌러지게 하는 용도의 상태를 나타내는 변수
+            let stop = !state.stop;
             return {
                 ...state,
-                timer,
-            };
+                stop,
+            }
+        }
+        case ACTION_STOP_TIMER2: {
+            console.log(action.time);
+            if (state.stop) {
+                timeInterval = setInterval(() => { action.setTime((c) => c + 1) }, 1000);
+            }
+            else
+                clearInterval(timeInterval);
+            //stop 변수는 셀 더이상 안눌러지게 하는 용도의 상태를 나타내는 변수
+            let stop = !state.stop;
+            return {
+                ...state,
+                stop,
+            }
         }
         case ACTION_START_GAME: {
+            timeInterval = setInterval(() => { action.setTime((c) => c + 1) }, 1000);
+            console.log(timeInterval);
             return {
                 ...state,
                 tableData: mineSetting(action.row, action.col, action.mine),
@@ -157,17 +186,20 @@ export const reducer = (state, action) => {
                 mine: action.mine,
                 timer: 0,
                 start: true,
+                finish: false,
             };
         }
         case ACTION_OPEN_CELL: {
             if (state.stop) return { ...state };
-            const tableData = [...state.tableData];
-            console.log(tableData);
-            //tableData[action.row][action.col] = CODE.OPENED;
-            tableData[action.row] = [...state.tableData[action.row]];
 
+            const tableData = [...state.tableData];
+            tableData[action.row] = [...state.tableData[action.row]];
+            //tableData[action.row][action.col] = CODE.OPENED;
+
+            //console.log(tableData);
             getAround(tableData, action.row, action.col);
 
+            //열린칸수 확인
             let counter = 0;
             for (let i = 0; i < state.row; i++) {
                 for (let j = 0; j < state.col; j++) {
@@ -189,12 +221,13 @@ export const reducer = (state, action) => {
                     }
                 }
                 setTimeout(() => {
-                    alert(`Game Complete! :)\nyour score : ${state.timer}s`)
+                    alert(`Game Complete! :)\nyour score : ${action.time}s`)
                 }, 500);
                 return {
                     ...state,
                     tableData,
                     stop: true,
+                    finish: true,
                 };
             };
 
@@ -224,6 +257,7 @@ export const reducer = (state, action) => {
                 ...state,
                 tableData,
                 stop: true,
+                finish: true,
             };
         }
         case ACTION_MAKE_FLAG: {
@@ -266,14 +300,8 @@ export const reducer = (state, action) => {
                 tableData,
             };
         }
-        case ACTION_STOP_TIMER: {
-            let stop = !state.stop;
-            return {
-                ...state,
-                stop,
-            }
-        }
         case ACTION_BACK: {
+            //start는 게임이 동작중인지 확인하는 용도의 변수
             clearInterval(timeInterval);
             return {
                 ...state,

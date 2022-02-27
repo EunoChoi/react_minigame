@@ -1,8 +1,8 @@
 import { useState, useCallback, useContext } from 'react';
 import { TableContext } from './App';
-import { ACTION_START_GAME, ACTION_TIME_COUNT } from './Reducer';
-export let timeInterval;
-const Main = () => {
+import { ACTION_START_GAME } from './Reducer';
+
+const Main = ({ setTime }) => {
     const [row, setRow] = useState(7);
     const [col, setCol] = useState(7);
     const [mine, setMine] = useState(10);
@@ -28,25 +28,49 @@ const Main = () => {
             alert('plaese correct number');
             return;
         }
-        dispatch({ type: ACTION_START_GAME, row: row, col: col, mine: mine });
+        dispatch({
+            type: ACTION_START_GAME,
+            row: row,
+            col: col,
+            mine: mine,
+            setTime
+        });
         //이전에 생성된 타이머 setInterval 삭제
-        clearInterval(timeInterval);
-        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
+        // clearInterval(timeInterval);
+        // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     };
     const onClickLevel1 = () => {
-        dispatch({ type: ACTION_START_GAME, row: 6, col: 6, mine: 6 });
-        clearInterval(timeInterval);
-        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
+        dispatch({
+            type: ACTION_START_GAME,
+            row: row,
+            col: col,
+            mine: mine,
+            setTime
+        });
+        // clearInterval(timeInterval);
+        // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickLevel2 = () => {
-        dispatch({ type: ACTION_START_GAME, row: 8, col: 8, mine: 16 });
-        clearInterval(timeInterval);
-        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
+        dispatch({
+            type: ACTION_START_GAME,
+            row: row,
+            col: col,
+            mine: mine,
+            setTime
+        });
+        // clearInterval(timeInterval);
+        // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickLevel3 = () => {
-        dispatch({ type: ACTION_START_GAME, row: 8, col: 8, mine: 30 });
-        clearInterval(timeInterval);
-        timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
+        dispatch({
+            type: ACTION_START_GAME,
+            row: row,
+            col: col,
+            mine: mine,
+            setTime
+        });
+        // clearInterval(timeInterval);
+        // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
     }
     const onClickCustom = () => {
         setCustom((c) => !c);
