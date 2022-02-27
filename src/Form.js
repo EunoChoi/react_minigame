@@ -64,7 +64,7 @@ const Form = () => {
                     <button className='btn' onClick={onClickLevel3}>level 3</button>
                 </div> : null}
 
-                <button className='btn' onClick={onClickCustom}>custom</button>
+                <button className='btn' onClick={onClickCustom}>{!custom ? 'custom' : 'back'}</button>
 
                 {custom ? <div className='levelCustom'>
                     <div>
@@ -72,7 +72,8 @@ const Form = () => {
                         <input
                             id='row'
                             type='number'
-                            min="2" max="10"
+                            min="2"
+                            max="10"
                             placeholder='Row'
                             value={row}
                             onChange={onChangeRow} />
@@ -82,7 +83,8 @@ const Form = () => {
                         <input
                             id='col'
                             type='number'
-                            min="2" max="10"
+                            min="2"
+                            max="10"
                             placeholder='Col'
                             value={col}
                             onChange={onChangeCol} />
@@ -92,7 +94,8 @@ const Form = () => {
                         <input
                             id='mine'
                             type='number'
-                            min="2" max="70"
+                            min="2"
+                            max="70"
                             placeholder='Mine'
                             value={mine}
                             onChange={onChangeMine} />

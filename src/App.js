@@ -29,13 +29,15 @@ export const CODE = {
 
 function App() {
 
-
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
 
   //cashing to prevent Rerendering
   const value = useMemo(
     () => ({
+      row: state.row,
+      col: state.col,
+      mine: state.mine,
       timer: state.timer,
       stop: state.stop,
       tableData: state.tableData,

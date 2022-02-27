@@ -1,7 +1,11 @@
+body { -webkit-touch-callout: none !important; }
+a { -webkit-user-select: none !important; }
+
 table {
     border-collapse: separate;
 }
 td {
+    border-radius: 4px;
     font-weight: 600;
     color : gray;
     border: none;
@@ -51,9 +55,10 @@ body{
     font-weight: 800;
     font-size: 28px;
 }
-.back{
+.inGameBtn{
     font-size: 30px;
     border:none;
+    color :grey;
     background-color: mediumaquamarine;
 }
 table{
@@ -82,7 +87,12 @@ table{
     border-radius: 30px;
 
     width: 200px;
-    height: 200px;
+    height: 220px;
+}
+.levelCustom div{
+    width: 160px;
+    display: flex;
+    justify-content: space-between;
 }
 .levelCustom span{
     border : none;
@@ -93,10 +103,11 @@ table{
 }
 .levelCustom input{
     border : none;
-    text-align: center;
+    text-align: right;
     font-weight: 600;
     color: grey;
     font-size: 20px;
+    width: 70px;
     margin: 5px;
 }
 .levelCustom button{

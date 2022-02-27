@@ -274,6 +274,7 @@ export const reducer = (state, action) => {
             }
         }
         case ACTION_BACK: {
+            clearInterval(timer);
             return {
                 ...state,
                 start: false,
