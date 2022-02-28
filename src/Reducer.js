@@ -220,8 +220,9 @@ export const reducer = (state, action) => {
                             tableData[i][j] = CODE.F_MINE;
                     }
                 }
+                const timeout = Math.floor(action.time / 60) + 'm ' + action.time % 60 + 's';
                 setTimeout(() => {
-                    alert(`Game Complete! :)\nyour score : ${action.time}s`)
+                    alert(`Game Complete! :)\nyour score : ${timeout}`)
                 }, 500);
                 return {
                     ...state,

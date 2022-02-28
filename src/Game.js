@@ -20,7 +20,7 @@ const Game = ({ time, setTime }) => {
     return (
         <div className='gamePage'>
             <span className='title'>Minesweeper</span>
-            <span className='subTitle'>{time}s</span>
+            <span className='subTitle'>{Math.floor(time / 60)}m {time % 60}s</span>
 
             <table>
                 <tbody>
@@ -35,10 +35,12 @@ const Game = ({ time, setTime }) => {
                 <button className='inGameBtn' onClick={onClickRefresh}>
                     <i className="fa-solid fa-rotate-left"></i>
                 </button>
-                <button className='inGameBtn' onClick={onClickPauseTogle}>
-                    {finish ? null :
-                        (stop === true ? <i className="fa-solid fa-play"></i> : <i className="fa-solid fa-pause"></i>)}
-                </button>
+                {finish ? null :
+                    <button className='inGameBtn' onClick={onClickPauseTogle}>
+                        {stop === true ? <i className="fa-solid fa-play"></i> : <i className="fa-solid fa-pause"></i>}
+                    </button>
+                }
+
             </div>
         </div >
     );

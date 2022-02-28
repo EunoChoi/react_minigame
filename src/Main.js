@@ -42,9 +42,9 @@ const Main = ({ setTime }) => {
     const onClickLevel1 = () => {
         dispatch({
             type: ACTION_START_GAME,
-            row: row,
-            col: col,
-            mine: mine,
+            row: 5,
+            col: 5,
+            mine: 5,
             setTime
         });
         // clearInterval(timeInterval);
@@ -53,9 +53,9 @@ const Main = ({ setTime }) => {
     const onClickLevel2 = () => {
         dispatch({
             type: ACTION_START_GAME,
-            row: row,
-            col: col,
-            mine: mine,
+            row: 7,
+            col: 7,
+            mine: 10,
             setTime
         });
         // clearInterval(timeInterval);
@@ -64,9 +64,9 @@ const Main = ({ setTime }) => {
     const onClickLevel3 = () => {
         dispatch({
             type: ACTION_START_GAME,
-            row: row,
-            col: col,
-            mine: mine,
+            row: 9,
+            col: 9,
+            mine: 18,
             setTime
         });
         // clearInterval(timeInterval);
@@ -89,12 +89,10 @@ const Main = ({ setTime }) => {
                     <span className='customTitle'>Custom</span>
                     <div>
                         <span htmlFor='row'>ROW :</span>
+                        {/* onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()} */}
                         <input
                             id='row'
                             type='number'
-                            min="2"
-                            max="10"
-                            placeholder='Row'
                             value={row}
                             onChange={onChangeRow} />
                     </div>
@@ -103,9 +101,6 @@ const Main = ({ setTime }) => {
                         <input
                             id='col'
                             type='number'
-                            min="2"
-                            max="10"
-                            placeholder='Col'
                             value={col}
                             onChange={onChangeCol} />
                     </div>
@@ -114,9 +109,6 @@ const Main = ({ setTime }) => {
                         <input
                             id='mine'
                             type='number'
-                            min="2"
-                            max="70"
-                            placeholder='Mine'
                             value={mine}
                             onChange={onChangeMine} />
                     </div>
