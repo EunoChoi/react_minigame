@@ -20,8 +20,15 @@ const Game = ({ time, setTime }) => {
     return (
         <div className='gamePage'>
             <span className='title'>Minesweeper</span>
-            <span className='subTitle'>{Math.floor(time / 60)}m {time % 60}s</span>
+            <span className='subTitle'>
+                {/* padStart사용하여 빈곳에 0 넣는 방법 */}
+                {Math.floor(time / 3600) >= 1 ? (Math.floor(time / 3600) + ':').padStart(3, '0') : null}
+                {(Math.floor(time / 60) + ':').padStart(3, '0')}
+                {(time % 60).toString().padStart(2, '0')}
 
+                {/* 앞에 0을추가하고 slice를 통해서 뒤 두자리 수만 잘라오는 방법 */}
+                {/* {('00' + Math.floor(time / 60)).slice(-2) + ':'} */}
+            </span>
             <table>
                 <tbody>
                     {Array(tableData.length).fill().map((tr, i) => <Tr time={time} key={i} rowIndex={i} />)}
