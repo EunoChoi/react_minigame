@@ -125,7 +125,7 @@ const Td = memo(({ rowIndex, colIndex, time }) => {
         longTouch =
             setTimeout(() => {
                 onRightClick(e);
-            }, 1000);
+            }, 500);
     }
     const onTouchEnd = () => {
         clearInterval(longTouch);
