@@ -13,21 +13,35 @@ const Main = ({ setTime }) => {
 
     //onChange 이벤트 함수들은 변화가 없으므로 useCallback으로 재선언 방지
     const onChangeRow = useCallback((e) => {
-        setRow(Number(e.target.value));
+        if (!isNaN(e.target.value))
+            setRow(Number(e.target.value));
     }, []);
     const onChangeCol = useCallback((e) => {
-        setCol(Number(e.target.value));
+        if (!isNaN(e.target.value))
+            setCol(Number(e.target.value));
     }, []);
     const onChangeMine = useCallback((e) => {
-        setMine(Number(e.target.value));
+        if (!isNaN(e.target.value))
+            setMine(Number(e.target.value));
     }, []);
 
     //click startbutton
     const onClickStart = () => {
-        if (mine >= row * col) {
-            alert('plaese correct number');
+        //입력된 값들이 올바른지 확인
+        //row, col 범위 조건 확인
+        if (!((3 <= row && row <= 12) && (3 <= col && col <= 12))) {
+            alert('The range of col number and row number is 3 to 12.');
             return;
         }
+        if (mine < 2) {
+            alert('The number of mine is at least 3.');
+            return;
+        }
+        if (mine >= row * col || mine <= 1) {
+            alert('There can\'t be more mines than cell number.');
+            return;
+        }
+
         dispatch({
             type: ACTION_START_GAME,
             row: row,
@@ -88,28 +102,35 @@ const Main = ({ setTime }) => {
                 {custom ? <div className='levelCustom'>
                     <span className='customTitle'>Custom</span>
                     <div>
-                        <span htmlFor='row'>ROW :</span>
+                        <label htmlFor='row'>ROW :</label>
                         {/* onKeyPress={(e) => !/[0-9]/.test(e.key) && e.preventDefault()} */}
                         <input
                             id='row'
-                            type='number'
+                            type='text'
+                            inputMode='numeric'
+                            pattern='[0-9]*'
                             value={row}
                             onChange={onChangeRow} />
                     </div>
                     <div>
-                        <span htmlFor='col'>COL :</span>
+                        <label htmlFor='col'>COL :</label>
                         <input
                             id='col'
-                            type='number'
+                            type='text'
+                            inputMode='numeric'
+                            pattern='[0-9]*'
                             value={col}
                             onChange={onChangeCol} />
                     </div>
                     <div>
-                        <span htmlFor='mine'>MINE :</span>
+                        <label htmlFor='mine'>MINE :</label>
                         <input
                             id='mine'
-                            type='number'
+                            type='text'
+                            inputMode='numeric'
+                            pattern='[0-9]*'
                             value={mine}
+                            required
                             onChange={onChangeMine} />
                     </div>
 

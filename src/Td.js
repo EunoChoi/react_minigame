@@ -120,8 +120,21 @@ const Td = memo(({ rowIndex, colIndex, time }) => {
         }
     }, [colIndex, dispatch, rowIndex, stop, tableData]);
 
+    let longTouch;
+    const onTouchStart = (e) => {
+        longTouch =
+            setTimeout(() => {
+                onRightClick(e);
+            }, 1000);
+    }
+    const onTouchEnd = () => {
+        clearInterval(longTouch);
+    }
+
     return (
         <td
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
             style={getTdStyle(tableData[rowIndex][colIndex])}
             onContextMenu={onRightClick}
             onClick={onClick}>
