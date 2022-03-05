@@ -27,7 +27,7 @@ export const CODE = {
   //0~8 OPENED,  mean around mine number
 }
 function App() {
-
+  console.log('app rerendering');
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
   const [time, setTime] = useState(0);
@@ -70,7 +70,7 @@ function App() {
 
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
-        {!state.start ? <Main time={time} setTime={setTime} /> : null}
+        {!state.start ? <Main setTime={setTime} /> : null}
         {state.start ? <Game os={os} time={time} setTime={setTime} /> : null}
       </TableContext.Provider>
     </div >

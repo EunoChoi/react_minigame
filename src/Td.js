@@ -105,10 +105,6 @@ const Td = memo(({ rowIndex, colIndex, time, os }) => {
 
     const onRightClick = useCallback((e) => {
         e.preventDefault();
-        if (os === 'android') {
-            //alert(os);
-            return;
-        }
         if (stop) {
             return;
         }
@@ -130,45 +126,30 @@ const Td = memo(({ rowIndex, colIndex, time, os }) => {
         }
     }, [colIndex, dispatch, os, rowIndex, stop, tableData]);
 
-    const onLongClick = useCallback((e) => {
-        e.preventDefault();
-        if (stop) {
-            return;
-        }
-        switch (tableData[rowIndex][colIndex]) {
-            case CODE.NORMAL:
-            case CODE.MINE:
-                dispatch({ type: ACTION_MAKE_FLAG, row: rowIndex, col: colIndex })
-                break;
-            case CODE.F_MINE:
-            case CODE.F_NORMAL:
-                dispatch({ type: ACTION_MAKE_QS, row: rowIndex, col: colIndex })
-                break;
-            case CODE.Q_MINE:
-            case CODE.Q_NORMAL:
-                dispatch({ type: ACTION_MAKE_NORMAL, row: rowIndex, col: colIndex })
-                break;
-            default:
-                break;
-        }
-    }, [colIndex, dispatch, rowIndex, stop, tableData]);
 
     const onTouchStart = (e) => {
+        //android면 context menu 이용해서 동작하도록 터치동작은 막는다
+        if (os === 'android') {
+            return;
+        }
         //console.log('start');
         longTouch = setTimeout(
             () => {
                 //console.log('touch rejection on');
-                onLongClick(e);
+                onRightClick(e);
                 setTouchReject(true);
             }, 700);
     }
     const onTouchEnd = () => {
+        if (os === 'android') {
+            return;
+        }
         //console.log('end');
+        clearTimeout(longTouch);
         setTimeout(() => {
             //console.log('touch rejection off');
             setTouchReject(false);
         }, 300);
-        clearTimeout(longTouch);
     }
 
     return (
