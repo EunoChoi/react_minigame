@@ -124,7 +124,7 @@ const Td = memo(({ rowIndex, colIndex, time, os }) => {
             default:
                 break;
         }
-    }, [colIndex, dispatch, os, rowIndex, stop, tableData]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData]);
 
 
     const onTouchStart = (e) => {
