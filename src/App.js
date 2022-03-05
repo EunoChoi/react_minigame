@@ -1,4 +1,4 @@
-import { useReducer, useMemo, createContext, useState } from 'react';
+import { useReducer, useMemo, createContext, useState, useCallback, useEffect } from 'react';
 
 import './App.css';
 
@@ -26,12 +26,30 @@ export const CODE = {
   OPENED: 0,
   //0~8 OPENED,  mean around mine number
 }
-
 function App() {
 
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
   const [time, setTime] = useState(0);
+  //time state가 app component에 있어서 app component가 시간 경과 마다 리렌더링 되는중
+  const [os, setOs] = useState('');
+  useEffect(() => {
+    //userAgent 값 얻기
+    var varUA = navigator.userAgent.toLowerCase();
+
+    if (varUA.indexOf('android') > -1) {
+      //안드로이드
+      setOs('android');
+    } else if (varUA.indexOf("iphone") > -1 || varUA.indexOf("ipad") > -1 || varUA.indexOf("ipod") > -1) {
+      //IOS
+      setOs('ios');
+    } else {
+      //아이폰, 안드로이드 외
+      setOs('others');
+    }
+    //console.log(os);
+  }, []);
+  console.log(os);
 
   //cashing to prevent Rerendering
   const value = useMemo(
@@ -53,7 +71,7 @@ function App() {
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
         {!state.start ? <Main time={time} setTime={setTime} /> : null}
-        {state.start ? <Game time={time} setTime={setTime} /> : null}
+        {state.start ? <Game os={os} time={time} setTime={setTime} /> : null}
       </TableContext.Provider>
     </div >
   );

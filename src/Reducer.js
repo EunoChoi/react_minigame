@@ -93,7 +93,7 @@ const getAround = (table, row, col) => {
                 table[row + 1][col + 1],
             ];
         }
-        console.log(around);
+        //console.log(around);
         //around배열으로 지뢰 수 계산
         table[row][col] = around.reduce((a, c) => {
             if (c === CODE.MINE || c === CODE.F_MINE || c === CODE.Q_MINE) a++;
@@ -209,7 +209,7 @@ export const reducer = (state, action) => {
             }
 
             //승리 조건 확인
-            console.log(counter, state.mine, state.row * state.col)
+            //console.log(counter, state.mine, state.row * state.col)
             if (counter + state.mine === state.row * state.col) {
                 clearInterval(timeInterval);
                 for (let i = 0; i < state.row; i++) {

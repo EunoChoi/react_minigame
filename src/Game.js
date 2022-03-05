@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { TableContext } from './App';
 import { ACTION_BACK, ACTION_START_GAME, ACTION_STOP_TIMER, ACTION_STOP_TIMER2 } from './Reducer';
 
-const Game = ({ time, setTime }) => {
+const Game = ({ time, setTime, os }) => {
     const { finish, stop, row, col, mine, tableData, dispatch } = useContext(TableContext);
 
     const onClickBack = () => {
@@ -31,7 +31,7 @@ const Game = ({ time, setTime }) => {
             </span>
             <table>
                 <tbody>
-                    {Array(tableData.length).fill().map((tr, i) => <Tr time={time} key={i} rowIndex={i} />)}
+                    {Array(tableData.length).fill().map((tr, i) => <Tr os={os} time={time} key={i} rowIndex={i} />)}
                 </tbody>
             </table>
 

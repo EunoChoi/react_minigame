@@ -1,4 +1,4 @@
-import { useContext, useCallback, memo } from "react";
+import { useContext, useCallback, memo, useState } from "react";
 import { CODE, TableContext } from "./App";
 import {
     ACTION_OPEN_CELL,
@@ -61,11 +61,16 @@ const getTdText = (code) => {
     }
 }
 
-const Td = memo(({ rowIndex, colIndex, time }) => {
+const Td = memo(({ rowIndex, colIndex, time, os }) => {
     const { tableData, stop, dispatch } = useContext(TableContext);
+    const [touchReject, setTouchReject] = useState(false);
+    let longTouch;
 
     const onClick = useCallback(() => {
-        //stop이 true면 셀 처리 X
+        if (touchReject) {
+            return;
+        }
+        //stop이 true면 클릭이 동작하지 않는다
         if (stop) {
             return;
         }
@@ -96,8 +101,36 @@ const Td = memo(({ rowIndex, colIndex, time }) => {
             default:
                 break;
         }
-    }, [colIndex, dispatch, rowIndex, stop, tableData, time]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData, time, touchReject]);
+
     const onRightClick = useCallback((e) => {
+        e.preventDefault();
+        if (os === 'android') {
+            //alert(os);
+            return;
+        }
+        if (stop) {
+            return;
+        }
+        switch (tableData[rowIndex][colIndex]) {
+            case CODE.NORMAL:
+            case CODE.MINE:
+                dispatch({ type: ACTION_MAKE_FLAG, row: rowIndex, col: colIndex })
+                break;
+            case CODE.F_MINE:
+            case CODE.F_NORMAL:
+                dispatch({ type: ACTION_MAKE_QS, row: rowIndex, col: colIndex })
+                break;
+            case CODE.Q_MINE:
+            case CODE.Q_NORMAL:
+                dispatch({ type: ACTION_MAKE_NORMAL, row: rowIndex, col: colIndex })
+                break;
+            default:
+                break;
+        }
+    }, [colIndex, dispatch, os, rowIndex, stop, tableData]);
+
+    const onLongClick = useCallback((e) => {
         e.preventDefault();
         if (stop) {
             return;
@@ -120,26 +153,36 @@ const Td = memo(({ rowIndex, colIndex, time }) => {
         }
     }, [colIndex, dispatch, rowIndex, stop, tableData]);
 
-    let longTouch;
     const onTouchStart = (e) => {
-        longTouch =
-            setTimeout(() => {
-                onRightClick(e);
-            }, 500);
+        //console.log('start');
+        longTouch = setTimeout(
+            () => {
+                //console.log('touch rejection on');
+                onLongClick(e);
+                setTouchReject(true);
+            }, 700);
     }
     const onTouchEnd = () => {
-        clearInterval(longTouch);
+        //console.log('end');
+        setTimeout(() => {
+            //console.log('touch rejection off');
+            setTouchReject(false);
+        }, 300);
+        clearTimeout(longTouch);
     }
 
     return (
-        <td
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-            style={getTdStyle(tableData[rowIndex][colIndex])}
-            onContextMenu={onRightClick}
-            onClick={onClick}>
-            {getTdText(tableData[rowIndex][colIndex])}
-        </td>
+        <>
+            <td
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                style={getTdStyle(tableData[rowIndex][colIndex])}
+                onContextMenu={onRightClick}
+                onClick={onClick}>
+                {getTdText(tableData[rowIndex][colIndex])}
+            </td>
+        </>
+
     );
 })
 
