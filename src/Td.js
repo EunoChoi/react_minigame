@@ -45,7 +45,7 @@ const getTdText = (code) => {
         case CODE.NORMAL:
             return '';
         case CODE.MINE:
-            return '';
+            return 'M';
         case CODE.CLICKED_MINE:
             return '🔥';
         case CODE.F_NORMAL:
@@ -61,8 +61,8 @@ const getTdText = (code) => {
     }
 }
 
-const Td = memo(({ rowIndex, colIndex, time, os }) => {
-    const { tableData, stop, dispatch } = useContext(TableContext);
+const Td = memo(({ rowIndex, colIndex }) => {
+    const { tableData, stop, dispatch, os } = useContext(TableContext);
     const [touchReject, setTouchReject] = useState(false);
     let longTouch;
 
@@ -95,13 +95,12 @@ const Td = memo(({ rowIndex, colIndex, time, os }) => {
                     type: ACTION_OPEN_CELL,
                     row: rowIndex,
                     col: colIndex,
-                    time,
                 });
                 break;
             default:
                 break;
         }
-    }, [colIndex, dispatch, rowIndex, stop, tableData, time, touchReject]);
+    }, [colIndex, dispatch, rowIndex, stop, tableData, touchReject]);
 
     const onRightClick = useCallback((e) => {
         e.preventDefault();
@@ -125,7 +124,6 @@ const Td = memo(({ rowIndex, colIndex, time, os }) => {
                 break;
         }
     }, [colIndex, dispatch, rowIndex, stop, tableData]);
-
 
     const onTouchStart = (e) => {
         //android면 context menu 이용해서 동작하도록 터치동작은 막는다

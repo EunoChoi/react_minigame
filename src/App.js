@@ -1,4 +1,4 @@
-import { useReducer, useMemo, createContext, useState, useCallback, useEffect } from 'react';
+import { useReducer, useMemo, createContext, useEffect } from 'react';
 
 import './App.css';
 
@@ -6,7 +6,7 @@ import Game from './Game';
 import Main from './Main';
 
 //reducer import
-import { reducer, initialState } from './Reducer';
+import { reducer, initialState, SET_OS } from './Reducer';
 
 
 //context create
@@ -27,31 +27,26 @@ export const CODE = {
   //0~8 OPENED,  mean around mine number
 }
 function App() {
-  console.log('app rerendering');
+  // console.log('app rerendering');
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [time, setTime] = useState(0);
-  //time state가 app component에 있어서 app component가 시간 경과 마다 리렌더링 되는중
-  const [os, setOs] = useState('');
+
   useEffect(() => {
     //userAgent 값 얻기
     var varUA = navigator.userAgent.toLowerCase();
-
+    console.log('app page refresh');
     if (varUA.indexOf('android') > -1) {
       //안드로이드
-      setOs('android');
+      dispatch({ type: SET_OS, os: 'android' })
     } else if (varUA.indexOf("iphone") > -1 || varUA.indexOf("ipad") > -1 || varUA.indexOf("ipod") > -1) {
       //IOS
-      setOs('ios');
+      dispatch({ type: SET_OS, os: 'ios' })
     } else {
       //아이폰, 안드로이드 외
-      setOs('others');
+      dispatch({ type: SET_OS, os: 'others' })
     }
-    //console.log(os);
   }, []);
-  console.log(os);
 
-  //cashing to prevent Rerendering
   const value = useMemo(
     () => ({
       row: state.row,
@@ -61,17 +56,18 @@ function App() {
       stop: state.stop,
       tableData: state.tableData,
       finish: state.finish,
-      dispatch
+      dispatch,
+      os: state.os,
     }),
-    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData, state.finish]);
+    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData, state.finish, state.os]);
 
   return (
     <div className="App">
 
       {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
-        {!state.start ? <Main setTime={setTime} /> : null}
-        {state.start ? <Game os={os} time={time} setTime={setTime} /> : null}
+        {!state.start ? <Main /> : null}
+        {state.start ? <Game /> : null}
       </TableContext.Provider>
     </div >
   );

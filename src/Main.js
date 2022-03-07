@@ -3,10 +3,10 @@ import { TableContext } from './App';
 import { ACTION_START_GAME } from './Reducer';
 
 const Main = ({ setTime }) => {
+
     const [row, setRow] = useState(7);
     const [col, setCol] = useState(7);
     const [mine, setMine] = useState(10);
-    //const [start, setStart] = useState(false);
     const [custom, setCustom] = useState(false);
 
     const { dispatch } = useContext(TableContext);
