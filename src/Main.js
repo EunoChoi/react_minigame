@@ -1,9 +1,9 @@
-import { useState, useCallback, useContext } from 'react';
+import { useState, useCallback, useContext, memo } from 'react';
 import { TableContext } from './App';
 import { ACTION_START_GAME } from './Reducer';
 
-const Main = ({ setTime }) => {
-
+const Main = memo(() => {
+    console.log('main page refresh');
     const [row, setRow] = useState(7);
     const [col, setCol] = useState(7);
     const [mine, setMine] = useState(10);
@@ -47,7 +47,6 @@ const Main = ({ setTime }) => {
             row: row,
             col: col,
             mine: mine,
-            setTime
         });
         //이전에 생성된 타이머 setInterval 삭제
         // clearInterval(timeInterval);
@@ -59,7 +58,6 @@ const Main = ({ setTime }) => {
             row: 5,
             col: 5,
             mine: 5,
-            setTime
         });
         // clearInterval(timeInterval);
         // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
@@ -70,7 +68,6 @@ const Main = ({ setTime }) => {
             row: 7,
             col: 7,
             mine: 10,
-            setTime
         });
         // clearInterval(timeInterval);
         // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
@@ -81,7 +78,6 @@ const Main = ({ setTime }) => {
             row: 9,
             col: 9,
             mine: 18,
-            setTime
         });
         // clearInterval(timeInterval);
         // timeInterval = setInterval(() => { dispatch({ type: ACTION_TIME_COUNT }); }, 1000);
@@ -146,6 +142,6 @@ const Main = ({ setTime }) => {
             </div>
         </>
     );
-}
+});
 
 export default Main;

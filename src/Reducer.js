@@ -1,5 +1,11 @@
 import { CODE } from "./App";
 
+
+export const initialStateTimer = {
+    timer2: 0,
+};
+
+
 //Reducer initialState
 export const initialState = {
     tableData: [],
@@ -9,12 +15,14 @@ export const initialState = {
     col: 0,
 
     openCount: 0,
+    finish: false,
 
     timer: 0,
     start: false,
     stop: true,
     os: '',
 };
+
 //Recuder action
 export const SET_OS = 'SET_OS';
 
@@ -207,6 +215,24 @@ const getAround_2 = (table, row, col) => {
     }
     return;
 }
+
+export const reducerTimer = (state, action) => {
+    switch (action.type) {
+        case ACTION_TIMER_UP: {
+            let timer = state.timer;
+            timer++;
+
+            return {
+                ...state,
+                timer,
+            }
+        }
+        default:
+            return state;
+    }
+}
+
+
 //Reducer function
 export const reducer = (state, action) => {
     switch (action.type) {

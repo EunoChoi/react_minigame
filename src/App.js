@@ -1,13 +1,11 @@
-import { useReducer, useMemo, createContext, useEffect } from 'react';
+import { memo, useReducer, useMemo, createContext, useEffect } from 'react';
 
 import './App.css';
-
 import Game from './Game';
 import Main from './Main';
 
 //reducer import
 import { reducer, initialState, SET_OS } from './Reducer';
-
 
 //context create
 export const TableContext = createContext({
@@ -26,15 +24,14 @@ export const CODE = {
   OPENED: 0,
   //0~8 OPENED,  mean around mine number
 }
-function App() {
-  // console.log('app rerendering');
+const App = memo(() => {
   //reducer
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log('app page refresh');
 
   useEffect(() => {
     //userAgent 값 얻기
     var varUA = navigator.userAgent.toLowerCase();
-    console.log('app page refresh');
     if (varUA.indexOf('android') > -1) {
       //안드로이드
       dispatch({ type: SET_OS, os: 'android' })
@@ -49,28 +46,30 @@ function App() {
 
   const value = useMemo(
     () => ({
+      os: state.os,
+
       row: state.row,
       col: state.col,
       mine: state.mine,
+
       timer: state.timer,
       stop: state.stop,
-      tableData: state.tableData,
       finish: state.finish,
+
+      tableData: state.tableData,
       dispatch,
-      os: state.os,
     }),
-    [state.row, state.col, state.mine, state.timer, state.stop, state.tableData, state.finish, state.os]);
+    [state.os, state.row, state.col, state.mine, state.timer, state.stop, state.finish, state.tableData]);
+
 
   return (
     <div className="App">
-
-      {/* value === { tableDate: state.tableData, dispatch } */}
       <TableContext.Provider value={value}>
         {!state.start ? <Main /> : null}
         {state.start ? <Game /> : null}
       </TableContext.Provider>
     </div >
   );
-}
+});
 
 export default App;

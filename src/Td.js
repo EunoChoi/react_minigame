@@ -1,5 +1,6 @@
-import { useContext, useCallback, memo, useState } from "react";
-import { CODE, TableContext } from "./App";
+import { useCallback, memo, useState } from "react";
+import { CODE } from "./App";
+
 import {
     ACTION_OPEN_CELL,
     ACTION_MAKE_FLAG,
@@ -39,13 +40,12 @@ const getTdStyle = (code) => {
     }
 
 }
-
 const getTdText = (code) => {
     switch (code) {
         case CODE.NORMAL:
             return '';
         case CODE.MINE:
-            return 'M';
+            return '';
         case CODE.CLICKED_MINE:
             return '🔥';
         case CODE.F_NORMAL:
@@ -61,8 +61,9 @@ const getTdText = (code) => {
     }
 }
 
-const Td = memo(({ rowIndex, colIndex }) => {
-    const { tableData, stop, dispatch, os } = useContext(TableContext);
+const Td = memo(({ tableData, rowIndex, colIndex, stop, dispatch, os }) => {
+    console.log('td page refresh');
+
     const [touchReject, setTouchReject] = useState(false);
     let longTouch;
 
@@ -107,6 +108,7 @@ const Td = memo(({ rowIndex, colIndex }) => {
         if (stop) {
             return;
         }
+
         switch (tableData[rowIndex][colIndex]) {
             case CODE.NORMAL:
             case CODE.MINE:
@@ -150,19 +152,14 @@ const Td = memo(({ rowIndex, colIndex }) => {
         }, 300);
     }
 
-    return (
-        <>
-            <td
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
-                style={getTdStyle(tableData[rowIndex][colIndex])}
-                onContextMenu={onRightClick}
-                onClick={onClick}>
-                {getTdText(tableData[rowIndex][colIndex])}
-            </td>
-        </>
+    return <td
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onClick={onClick}
+        onContextMenu={onRightClick}
+        style={getTdStyle(tableData[rowIndex][colIndex])}>
+        {getTdText(tableData[rowIndex][colIndex])}
+    </td>;
 
-    );
-})
-
+});
 export default Td;
