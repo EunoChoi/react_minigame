@@ -1,11 +1,11 @@
 import Table from './Table';
 import Time from './Time';
-import { memo } from 'react/cjs/react.development';
+import { memo } from 'react';
 import { useContext } from 'react';
 import { TableContext } from './App';
 import { ACTION_BACK, ACTION_START_GAME, ACTION_STOP_TIMER } from './Reducer';
 
-const Game = () => {
+const Game = memo(() => {
 
     const { os, tableData, finish, stop, row, col, mine, dispatch } = useContext(TableContext);
 
@@ -59,6 +59,6 @@ const Game = () => {
             </div >
         </>
     );
-}
+});
 
-export default memo(Game);
+export default Game;
