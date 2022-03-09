@@ -1,9 +1,11 @@
 
 table {
+    margin: 30px;
+
     border-collapse: separate;
 }
 td {
-    border-radius: 4px;
+    border-radius: 6px;
     font-weight: 600;
     color : gray;
     border: none;
@@ -69,9 +71,6 @@ body{
     border:none;
     color :grey;
     background-color: mediumaquamarine;
-}
-table{
-    margin: 30px;
 }
 
 .btn{
