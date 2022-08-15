@@ -130,7 +130,7 @@ const Main = memo(() => {
                             onChange={onChangeMine} />
                     </div>
 
-
+                    <span style={{color : 'cardetBlue'}}>a</span>
 
 
                     <button onClick={onClickStart}>Start</button>
